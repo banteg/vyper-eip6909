@@ -113,3 +113,19 @@ def supportsInterface(interface_id: bytes4) -> bool:
     @dev eip-165 extension
     """
     return interface_id in [EIP6069_INTERFACE_ID, EIP165_INTERFACE_ID]
+
+
+@internal
+def mint(receiver: address, token_id: uint256, amount: uint256):
+    self.balanceOf[receiver][token_id] += amount
+    self.totalSupply[token_id] += amount
+
+    log Transfer(empty(address), receiver, token_id, amount)
+
+
+@internal
+def burn(sender: address, token_id: uint256, amount: uint256):
+    self.balanceOf[sender][token_id] -= amount
+    self.totalSupply[token_id] -= amount
+
+    log Transfer(sender, empty(address), token_id, amount)
