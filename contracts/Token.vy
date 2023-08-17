@@ -10,8 +10,8 @@
 event Transfer:
     sender: indexed(address)
     receiver: indexed(address)
-    token_id: indexed(uint256)  # FIXME EIP says address and it's wrong
-    amount: uint256  # FIXME EIP says address here
+    token_id: indexed(uint256)
+    amount: uint256
 
 event Approval:
     owner: indexed(address)
@@ -48,7 +48,6 @@ base_uri: constant(String[100]) = "https://somewhere.on.the.internet/"
 
 @external
 def transfer(receiver: address, token_id: uint256, amount: uint256) -> bool:
-    # FIXME add return bool in the EIP
     assert receiver not in [empty(address), self]
 
     self.balanceOf[msg.sender][token_id] -= amount
@@ -63,7 +62,6 @@ def transferFrom(sender: address, receiver: address, token_id: uint256, amount: 
     """
     @dev doesn't log Approval when allowance is modified
     """
-    # FIXME add return bool in the EIP
     assert receiver not in [empty(address), self]
 
     allowance: uint256 = self.allowance[sender][msg.sender][token_id]
@@ -82,7 +80,6 @@ def transferFrom(sender: address, receiver: address, token_id: uint256, amount: 
 
 @external
 def approve(spender: address, token_id: uint256, amount: uint256) -> bool:
-    # FIXME return bool in EIP
     self.allowance[msg.sender][spender][token_id] = amount
 
     log Approval(msg.sender, spender, token_id, amount)
