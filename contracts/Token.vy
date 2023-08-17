@@ -1,5 +1,8 @@
 # @version 0.3.10
 """
+@title ERC-6909: Minimal Multi-Toke Interface
+@notice A minimal specification for managing multiple tokens by their id in a single contract.
+@author banteg
 @dev
     this contract uses `token_id` instead of `id` for greater clarity
 """
@@ -34,6 +37,13 @@ allowance: public(HashMap[address, HashMap[address, HashMap[uint256, uint256]]])
 
 # owner -> spender -> status
 isOperator: public(HashMap[address, HashMap[address, bool]])
+
+# token_id -> decimals
+decimals: public(HashMap[uint256, uint8])  # FIXME force 18 decimals instead
+
+name: public(constant(String[100])) = "Bunny Token"
+symbol: public(constant(String[100])) = "HOP"
+base_uri: constant(String[100]) = "https://somewhere.on.the.internet/"
 
 
 @external
@@ -90,3 +100,10 @@ def setOperator(spender: address, approved: bool) -> bool:
     return True
 
 
+@view
+@external
+def tokenURI(token_id: uint256) -> String[256]:
+    return concat(base_uri, uint2str(token_id))
+
+
+# TODO delete metadata structure from EIP
