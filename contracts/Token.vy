@@ -45,6 +45,9 @@ name: public(constant(String[100])) = "Bunny Token"
 symbol: public(constant(String[100])) = "HOP"
 base_uri: constant(String[100]) = "https://somewhere.on.the.internet/"
 
+EIP165_INTERFACE_ID: constant(bytes4) = 0x01ffc9a7
+EIP6069_INTERFACE_ID: constant(bytes4) = 0xb2e69f8a
+
 
 @external
 def transfer(receiver: address, token_id: uint256, amount: uint256) -> bool:
@@ -103,4 +106,10 @@ def tokenURI(token_id: uint256) -> String[256]:
     return concat(base_uri, uint2str(token_id))
 
 
-# TODO delete metadata structure from EIP
+@view
+@external
+def supportsInterface(interface_id: bytes4) -> bool:
+    """
+    @dev eip-165 extension
+    """
+    return interface_id in [EIP6069_INTERFACE_ID, EIP165_INTERFACE_ID]
